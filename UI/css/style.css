@@ -17,7 +17,7 @@ body {
   
   font-family: Poppins;
   font-weight: 400;
-/*  background-color: rgb(16, 117, 233);*/
+ /* background-color: rgb(15, 95, 187);*/
   background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(../images/background-img.jpg) no-repeat;
   background-position: center;
   background-size: cover;
@@ -233,6 +233,11 @@ nav ul li a:hover {
   color: white;
   z-index: -1;
 }
+.login-box p {
+ color: darkorange;
+ margin-top: 20%;
+}
+
 .login-box h1{
   float: left;
   font-size: 30px;
@@ -262,7 +267,7 @@ nav ul li a:hover {
 .login-box a{
   text-align: center;
   text-decoration: none;
- background-color: white;
+ /*background-color: white;*/
   font-size: 18px;
   width: 100%;
   float: left;
@@ -282,13 +287,22 @@ nav ul li a:hover {
   border-radius: 10px;
   color: #074f80;
   font-size: 18px;
-  background: white;
+  /*background: white; */
   padding: 5px;
   cursor: pointer;
   border: wheat;
 
 }
-
+.first{
+  background-color: white;
+}
+.second{
+  background: darkorange;
+  color: white;
+}
+.bg-color{
+  background: #074f80
+}
 .btn:hover{
   background-color:  #074f80;
   color: white;

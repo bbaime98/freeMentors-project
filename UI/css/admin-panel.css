@@ -30,6 +30,7 @@
     height: 80px;
    /* background: rgb(16, 117, 233);*/
     box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+    
   }
   
   .logo {
@@ -47,6 +48,10 @@
     font-size: 30px;
     letter-spacing: 0px;
     text-decoration: none;
+  }
+  .current {
+    color: rgb(6, 61, 143);
+    
   }
   
   nav ul {
@@ -69,7 +74,7 @@
   
   nav ul li a {
     display: inline-block;
-    color: white;
+    
     text-transform: uppercase;
     font-size: 20px;
     letter-spacing: 1px;
@@ -77,16 +82,14 @@
     
   padding: 4px 10px;
   
-  color: #fff;
+  
   text-decoration: none;
   transition: 0.5s ease;
   }
   
-  nav ul li a:hover {
+  .nav ul li  a:hover {
     color: darkorange;
-    background-color: white ;
-    border: 0px solid #fff;
-    border-radius: 3px;
+    background-color: white;
   }
   
   @media screen and (max-width: 864px) {
@@ -144,13 +147,14 @@
     .nav-wrapper ul li a {
           padding: 10px 24px;
           opacity: 0;
-          color: black;
+          
           font-size: 14px;
           font-weight: 600;
           letter-spacing: 1.2px;
           transform: translateX(-20px);
           transition:  0.1s;
           margin-right: 90px;
+          border-radius: 2px;
     }
   
     .nav-btn {
@@ -301,7 +305,7 @@
     color: white;
   }
   .bg-color{
-    background: white;
+    background: rgb(212, 211, 211);
   }
   .btn:hover{
     background-color:  #074f80;
@@ -318,6 +322,14 @@
     height: 35px;
   
    /* padding: 2px; */
+  }
+  .separate{
+    z-index: 1;
+    min-height: 8vh;
+  
+  }
+  .containerog{
+    margin-bottom: 0px;
   }
   
   
@@ -387,7 +399,7 @@
     display: block;
     padding: 10px 0;
     margin: 10px auto;
-    border-radius: 10px;
+    border-radius: 5px;
     text-transform: uppercase;
     font-size: 14px;
     transition: 0.5s;

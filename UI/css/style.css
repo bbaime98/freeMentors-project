@@ -235,16 +235,19 @@ nav ul li a:hover {
 }
 .login-box p {
  color: darkorange;
- margin-top: 20%;
+ margin-top: 50px;
+}
+.already{
+  margin-top: 60px;
 }
 
 .login-box h1{
   float: left;
   font-size: 30px;
-  border-bottom: 3px solid #074f80;
+  border-bottom: 3px solid white;
   margin-bottom: 50px;
   padding: 13px;
-  color: white;
+  color: darkorange;
 }
 .textbox{
   width: 100%;
@@ -293,10 +296,10 @@ nav ul li a:hover {
   border: wheat;
 
 }
-.first{
+.second{
   background-color: white;
 }
-.second{
+.first{
   background: darkorange;
   color: white;
 }
@@ -316,8 +319,16 @@ footer{
   width: 100%;
   bottom: 0;
   height: 35px;
-
+  margin-top: 60px;
  /* padding: 2px; */
+}
+.separate{
+  z-index: 1;
+  min-height: 8vh;
+
+}
+.containerog{
+  margin-bottom: 0px;
 }
 
 
@@ -387,7 +398,7 @@ footer{
   display: block;
   padding: 10px 0;
   margin: 10px auto;
-  border-radius: 10px;
+  border-radius: 2px;
   text-transform: uppercase;
   font-size: 14px;
   transition: 0.5s;
@@ -396,6 +407,26 @@ footer{
 .table .book-session:hover{
   background: darkorange;
   color: #fff;
+}
+.decline-color{
+  text-decoration: none;
+  color: #2c3e50;
+  border: 2px solid #2c3e50;;
+  display: block;
+  padding: 10px 0;
+  margin: 10px auto;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-size: 14px;
+  transition: 0.5s;
+  width: 70%;
+}
+.decline-color:hover{
+  background: red;
+  color: #fff;
+}
+.booked{
+  background: white;
 }
 
 

@@ -1,7 +1,6 @@
 .env
 node_modules/
 coverage/
-nyc_output/
 package-lock.json
 node_modules
 .nyc_output/

@@ -37,6 +37,46 @@ export default class SessionController {
             message: "Session created sucessfully",
             data: newSession
         })
+    };
+    static rejectSession(req, res) {
+
+        if (isNaN(req.params.id)) {
+            return res.status(400).json({
+                status: 400,
+                errror: "Please check the ID You enter it must be a valid"
+            })
+        }
+
+        if (!req.user.is_mentor) {
+            return res.status(405).json({
+                status: 405,
+                error: "Only a mentor can perform this action"
+            })
+        }
+
+        const session = sessions.find(sessionof => sessionof.sessionId === parseInt(req.params.id));
+
+        if (!session) {
+            return res.status(404).json({
+                status: 404,
+                error: "Session not Found"
+            })
+        }
+        
+        if(parseInt(session.mentorId) !== req.user.id){
+                return res.status(403).json({
+                    status: 403,
+                    error: "Can not reject session which is not yours"
+                })
+        }
+        
+        session.status = "rejected"
+
+        res.status(200).json({
+            status: 200,
+            data: session
+        })
     }
+
 
 }

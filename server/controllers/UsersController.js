@@ -52,5 +52,38 @@ export default class USers {
          }
      })
 }
+static signin(req,res) {
+    const user = users.find(userof=>userof.email === req.body.email);
+    if(!user){
+        return res.status(404).json({
+            status:404,
+            error:"User not found"
+        })
+    }
+    const password = bcrypt.compareSync(req.body.password,user.password); 
+    if (!password){
+        return res.status(403).json({
+            status:403,
+            error:"Invalid email or password"
+        })
+    }
+    const token = jwt.sign({
+        id:user.id,
+        is_mentor:user.is_mentor,
+        is_admin:user.is_admin,
+        email:user.email
+    },process.env.JWTPRIVATEKEY)
+    res.header('token',token)
+    res.status(200).json({
+        status:200,
+        message:"user is successfully logged in",
+        data:{
+            token:token,
+            id:user.id,
+            first_name: user.first_name,
+            email:user.email
+        }
+    })
+}
 
 }

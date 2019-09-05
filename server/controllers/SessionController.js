@@ -76,7 +76,38 @@ export default class SessionController {
             status: 200,
             data: session
         })
-    }
+    };
+    static mentorAllSession(req, res) {
+        if (req.user.is_mentor) {
+
+            const mentorSession = sessions.filter(sessionsof => sessionsof.mentorId === req.user.id);
+
+            if (!mentorSession) {
+                return res.status(404).json({
+                    status: 404,
+                    error: "No sessions found for the user"
+                })
+            }
+            return res.status(200).json({
+                status: 200,
+                data: mentorSession
+            })
+        }
+        else {
+            const mySessions = sessions.filter(sessionsof => sessionsof.menteeId === req.user.id);
+
+            if (!mySessions) {
+                return res.status(404).json({
+                    status: 404,
+                    error: "No sessions found for the user"
+                })
+            }
+            res.status(200).json({
+                status: 200,
+                data: mySessions
+            });
+        }
+    };
 
 
 }

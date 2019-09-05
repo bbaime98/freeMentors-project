@@ -65,6 +65,7 @@ export default class ReviewController {
         }) ; 
     }
 
+
     static  deleteReview(req, res) {
 
         if (isNaN(req.params.id)) {

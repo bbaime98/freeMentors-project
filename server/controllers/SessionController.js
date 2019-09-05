@@ -77,6 +77,7 @@ export default class SessionController {
             data: session
         })
     };
+  
     static acceptSsession(req, res) {
 
         if (isNaN(req.params.id)) {
@@ -108,6 +109,7 @@ export default class SessionController {
                 error: "Can not Accept session which is not yours"
             })
     }
+
 
         session.status = "accepted"
 

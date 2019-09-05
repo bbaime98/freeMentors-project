@@ -77,37 +77,48 @@ export default class SessionController {
             data: session
         })
     };
-    static mentorAllSession(req, res) {
-        if (req.user.is_mentor) {
+  
+    static acceptSsession(req, res) {
 
-            const mentorSession = sessions.filter(sessionsof => sessionsof.mentorId === req.user.id);
-
-            if (!mentorSession) {
-                return res.status(404).json({
-                    status: 404,
-                    error: "No sessions found for the user"
-                })
-            }
-            return res.status(200).json({
-                status: 200,
-                data: mentorSession
+        if (isNaN(req.params.id)) {
+            return res.status(400).json({
+                status: 400,
+                errror: "Please  enter valid session ID"
             })
         }
-        else {
-            const mySessions = sessions.filter(sessionsof => sessionsof.menteeId === req.user.id);
 
-            if (!mySessions) {
-                return res.status(404).json({
-                    status: 404,
-                    error: "No sessions found for the user"
-                })
-            }
-            res.status(200).json({
-                status: 200,
-                data: mySessions
-            });
+        if (!req.user.is_mentor) {
+            return res.status(403).json({
+                status: 403,
+                error: "Only a mentor can perform this action"
+            })
         }
+
+        const session = sessions.find(sessionof => sessionof.sessionId === parseInt(req.params.id));
+
+        if (!session) {
+            return res.status(404).json({
+                status: 404,
+                error: "Session not Found"
+            })
+        }
+
+        if(  req.user.id !== parseInt(session.mentorId)){
+            return res.status(403).json({
+                status: 403,
+                error: "Can not Accept session which is not yours"
+            })
+    }
+
+
+        session.status = "accepted"
+
+        res.status(200).json({
+            status: 200,
+            error: session
+        })
     };
+
 
 
 }

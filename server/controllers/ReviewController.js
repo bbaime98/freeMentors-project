@@ -65,5 +65,41 @@ export default class ReviewController {
         }) ; 
     }
 
+
+    static  deleteReview(req, res) {
+
+        if (isNaN(req.params.id)) {
+            return res.status(400).json({
+                status: 400,
+                error: "Enter a valid Id"
+            })
+        }
+
+        if (!req.user.is_admin) {
+            return res.status(403).json({
+                status: 403,
+                error: "Admin only is allowed "
+            })
+        }
+        const session = reviewed.find(reviewof => reviewof.sessionId === parseInt(req.params.id));
+        const index = reviewed.indexOf(session , 0);
+
+        if (!session) {
+            return res.status(404).json({
+                status: 404,
+                error: "Session not found"
+            })
+        }
+
+        res.status(200).json({
+            status: 200,
+            message: "Review successfuly deleted",
+            data: {
+                session
+
+            }
+        })
+        delete reviewed[index];
+    }
    
 }

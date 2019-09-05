@@ -170,7 +170,7 @@ describe('mentors test',()=>{
             res.body.should.have.property('data');
         })
         done();
-    });
+    })
 
     it('should return no token provided',(done)=>{
         chai.request(app)
@@ -194,5 +194,6 @@ describe('mentors test',()=>{
             expect(res.statusCode).to.equal(200);
         })
         done();
-    });
+    })
+
  })

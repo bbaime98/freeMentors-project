@@ -10,85 +10,71 @@ chai.use(chaiHttp);
 chai.should();
 
 
-describe('USER test',()=>{
-    it('should return account created',(done)=>{
-       const newUser = {
-        first_name:"kwizera",
-        last_name:"christophe",
-        email:"kabundege@gmail.com",
-        password: "efotec",
-        address:"kk 798 st",
-        bio:"A young Rwandan programmer",
-        occupation:"programmer",
-        expertise:"JS",
-        is_mentor:false,
-        is_admin:false
-       }
-
-       chai.request(app)
-       .post('/api/v1/auth/signup')
-       .send(newUser)
-       .end((err,res)=>{
-           expect(res.statusCode).to.equal(201);
-           expect(res.body).to.have.property('data');
-           expect(res.body.data).have.property('token');
-          // expectroperty('message').eql("user created successfully");
-           done();
-       })
+describe('user test',()=>{
+    let newUser, userToken, newMentor, mentorToken;
+    before(()=>{
+        newUser = {
+            first_name:"aime",
+            last_name:"bien",
+            email:"usertest@gmail.com",
+            password: "efotec",
+            address:"kk 798 st",
+            bio:"A young Rwandan programmer",
+            occupation:"programmer",
+            expertise:"JS",
+            is_mentor:false,
+            is_admin:false
+           }
+        newMentor = {
+            first_name:"aime",
+            last_name:"bien",
+            email:"mentortest@gmail.com",
+            password: "efotec",
+            address:"kk 798 st",
+            bio:"A young Rwandan programmer",
+            occupation:"programmer",
+            expertise:"JS",
+            is_mentor:true,
+            is_admin:false
+        }
+        
     })
-    it('should create admin account',(done)=>{
-        const newUser = {
-         first_name:"kwizera",
-         last_name:"christophe",
-         email:"admin@gmail.com",
-         password: "efotec",
-         address:"kk 798 st",
-         bio:"A young Rwandan programmer",
-         occupation:"programmer",
-         expertise:"JS",
-         is_mentor:false,
-         is_admin:true
-        }
- 
+    it('should return user created',(done)=>{
         chai.request(app)
         .post('/api/v1/auth/signup')
         .send(newUser)
         .end((err,res)=>{
-            res.should.have.status(201);
+            userToken = res.body.data.token;
+            res.body.should.be.a('object');
             res.body.should.have.property('status').eql(201);
-            res.body.should.have.property('data');
+            res.body.should.have.property('message').eql('user created successfully');
             res.body.data.should.have.property('token');
-            res.body.should.have.property('message').eql("user created successfully");
-           // expectroperty('message').eql("user created successfully");
+            res.body.data.should.have.property('id');
+            res.body.data.should.have.property('first_name').eql('aime');
+            res.body.data.should.have.property('email').eql('usertest@gmail.com');
+            res.body.data.should.have.property('is_mentor').eql(false);
             done();
         })
-     })    
-     it('should create mentor account',(done)=>{
-        const newUser = {
-         first_name:"bien",
-         last_name:"aime",
-         email:"mentor@gmail.com",
-         password: "efotec",
-         address:"kk 798 st",
-         bio:"A young Rwandan programmer",
-         occupation:"programmer",
-         expertise:"JS",
-         is_mentor:true,
-         is_admin:false
-        }
- 
+    })
+   
+    it('should return mentor created',(done)=>{
         chai.request(app)
         .post('/api/v1/auth/signup')
-        .send(newUser)
+        .send(newMentor)
         .end((err,res)=>{
-            res.should.have.status(201);
+            mentorToken = res.body.data.token;
+            res.body.should.be.a('object');
             res.body.should.have.property('status').eql(201);
-            res.body.should.have.property('data');
+            res.body.should.have.property('message').eql('user created successfully');
             res.body.data.should.have.property('token');
-            res.body.should.have.property('message').eql("user created successfully");
+            res.body.data.should.have.property('id');
+            res.body.data.should.have.property('first_name').eql('aime');
+            res.body.data.should.have.property('email').eql('mentortest@gmail.com');
+            res.body.data.should.have.property('is_mentor').eql(true);
             done();
         })
-     })
+    })
+
         it('should return can be both adminand mentor',(done)=>{
         const newUser = {
          first_name:"qaime",
@@ -131,27 +117,11 @@ describe('USER test',()=>{
             done();
         })
     })
-    // it('should return all users',(done)=>{
-    //     const token = jwt.sign({
-    //         id:1,
-    //         is_mentor:false,
-    //         is_admin:true,
-    //         email:"kabundege@gmail.com"
-    //     },process.env.JWTPRIVATEKEY);
-
-    //     chai.request(app)
-    //     .get('/api/v1/users')
-    //     .set('token',token)
-    //     .end((err,res)=>{
-    //         expect(res.statusCode).to.equal(200);
-    //         done();
-    //     })
-    // })
     it('should return email already taken',(done)=>{
         const newUser = {
          first_name:"kwizera",
          last_name:"christophe",
-         email:"kabundege@gmail.com",
+            email:"usertest@gmail.com",
          password: "efotec",
          address:"kk 798 st",
          bio:"A young Rwandan programmer",
@@ -169,7 +139,7 @@ describe('USER test',()=>{
     })
     it('should return login sucessfully',(done)=>{
         const newUser = {
-         email:"kabundege@gmail.com",
+         email:"usertest@gmail.com",
          password: "efotec"
         }
  
@@ -201,7 +171,7 @@ describe('USER test',()=>{
     })
     it('should return email or password not correct',(done)=>{
         const newUser = {
-         email:"kabundege@gmail.com",
+         email:"usertest@gmail.com",
          password: "efotecbudari"
         }
  

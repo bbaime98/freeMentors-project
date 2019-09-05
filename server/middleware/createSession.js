@@ -3,7 +3,7 @@ import Joi from 'joi';
 const createValidater = (req,res,next)=>{
     const schema = {
         mentorId: Joi.number().integer().required(),
-        questions: Joi.string().min(20).required()
+        questions: Joi.string().min(5).max(30).required()
     }
     const {error} = Joi.validate(req.body,schema);
     

@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 chai.use(chaiHttp);
 chai.should();
 describe('session test',()=>{
-    let newUser, userToken, newMentor, mentorToken;
+    let newUser, userToken, newMentor, mentorToken, mentorId;
     before(()=>{
         newUser = {
             first_name:"aime",
@@ -59,6 +59,7 @@ describe('session test',()=>{
         .send(newMentor)
         .end((err,res)=>{
             mentorToken = res.body.data.token;
+            mentorId = res.body.data.id;
             res.body.should.be.a('object');
             res.body.should.have.property('status').eql(201);
             res.body.should.have.property('message').eql('user created successfully');
@@ -147,4 +148,119 @@ describe('session test',()=>{
         done();
     });
 
+    it('should return Error Only a mentor can perform this action',(done)=>{
+        const newSession ={
+            questions:"i have issues with my life",
+            mentorId:2
+        }
+        chai.request(app)
+        .patch(`/api/v1/sessions/${1}/reject`)
+        .set('token',userToken)
+        .send(newSession)
+        .end((err,res)=>{
+
+            res.body.should.be.a('object');
+            res.body.should.have.property('status').eql(403);
+            res.body.should.have.property('error').eql('Only a mentor can perform this action');
+            done();       
+        })
+    });
+    it('should return Error Session not Found',(done)=>{
+        const newSession ={
+            questions:"i have issues with my life",
+            mentorId:2
+        }
+        chai.request(app)
+        .patch(`/api/v1/sessions/${7}/reject`)
+        .set('token',mentorToken)
+        .send(newSession)
+        .end((err,res)=>{
+            res.body.should.be.a('object');
+            res.body.should.have.property('status').eql(404);
+            res.body.should.have.property('error').eql('Session not Found');
+            done();       
+        })
+    });
+
+    it('should Session created sucessfully',(done)=>{
+        const newSession = {
+            mentorId,
+            questions: 'what is this',           
+        }
+        chai.request(app)
+        .post('/api/v1/sessions')
+        .set('token', userToken)
+        .send(newSession)
+        .end((err,res)=>{
+
+            res.body.should.be.a('object');
+            res.body.should.have.property('status').eql(201);
+            res.body.should.have.property('message').eql('Session created sucessfully');
+            res.body.should.have.property('data');
+            done();       
+        })
+    });
+    it('should Session reject sucessfully',(done)=>{
+        const newSession = {
+            sessionId: 1,
+            mentorId: mentorId,
+            menteeId: 1,
+            questions: "yoo what's up",
+            menteeEmail: "sessiontest@gmail.com",
+            status: "rejected"        
+        }
+        chai.request(app)
+        .patch(`/api/v1/sessions/${1}/reject`)
+        .set('token', mentorToken)
+        .send(newSession)
+        .end((err,res)=>{
+            res.body.should.be.a('object');
+            res.body.should.have.property('status').eql(200);
+            res.body.should.have.property('data');
+            done();       
+        })
+    });
+    it('should Session accepted sucessfully',(done)=>{
+        const newSession = {
+            sessionId: 1,
+            mentorId: mentorId,
+            menteeId: 1,
+            questions: "yoo what's up",
+            menteeEmail: "sessiontest@gmail.com",
+            status: "accepted"        
+        }
+        chai.request(app)
+        .patch(`/api/v1/sessions/${1}/accept`)
+        .set('token', mentorToken)
+        .send(newSession)
+        .end((err,res)=>{
+            console.log(res.body)
+            res.body.should.be.a('object');
+            res.body.should.have.property('status').eql(200);
+            res.body.should.have.property('data');
+            done();       
+        })
+    });
+    it('should all sessions',(done)=>{
+        const newSession = {
+            sessionId: 1,
+            mentorId: mentorId,
+            menteeId: 1,
+            questions: "yoo what's up",
+            menteeEmail: "sessiontest@gmail.com",
+            status: "accepted"        
+        }
+        chai.request(app)
+        .get('/api/v1/sessions')
+        .set('token',userToken)
+        .send(newSession)
+        .end((err,res)=>{
+
+            res.body.should.be.a('object');
+            res.body.should.have.property('status').eql(200);
+            res.body.should.have.property('data');
+            done();       
+        })
+    });
+    
 })

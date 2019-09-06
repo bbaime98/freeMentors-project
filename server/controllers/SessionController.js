@@ -48,8 +48,8 @@ export default class SessionController {
         }
 
         if (!req.user.is_mentor) {
-            return res.status(405).json({
-                status: 405,
+            return res.status(403).json({
+                status: 403,
                 error: "Only a mentor can perform this action"
             })
         }
@@ -115,7 +115,7 @@ export default class SessionController {
 
         res.status(200).json({
             status: 200,
-            error: session
+            data: session
         })
     };
 

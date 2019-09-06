@@ -95,7 +95,7 @@ export default class MentorsController {
         }, process.env.JWTPRIVATEKEY);
         // user instead of users in case down on
         users.forEach((user => delete user.is_admin));
-
+        users.forEach((user => delete user.password));
         res.header('token', token).status(200).json({
             status: 200,
             data: {

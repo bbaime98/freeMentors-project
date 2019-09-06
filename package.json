@@ -28,11 +28,16 @@
     "eslint": "^6.3.0",
     "mocha": "^6.2.0",
     "nodemon": "^1.19.2"
+    
   },
   "scripts": {
     "start": "babel-watch server.js",
     "test": "nyc --reporter=html --reporter=text mocha --require @babel/register --timeout 10000 server/tests/ --exit",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+    "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage",
+    "coveralls-coverage": "coveralls < lcov.info",
+    "generate-lcov": "nyc report --reporter=text-lcov > lcov.info"
   },
   "repository": {
     "type": "git",

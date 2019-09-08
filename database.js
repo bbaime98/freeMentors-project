@@ -26,23 +26,24 @@ class DatabaseSetup{
         this.createTables();
     }
 
-    createTables(){
+    async createTables(){
 
         const  users = `
         CREATE TABLE IF NOT EXISTS user_table(
             id SERIAL PRIMARY KEY,
-            first_name VARCHAR(50) NOT NULL,
+            first_name VARCHAR(20) NOT NULL,
             last_name VARCHAR(50) NOT NULL,
-            email VARCHAR(40) NOT NULL UNIQUE,
-            address VARCHAR(40) NOT NULL,
-            bio VARCHAR(40) NOT NULL ,
-            occupation VARCHAR(40) NOT NULL UNIQUE,
-            expertise VARCHAR(40) NOT NULL UNIQUE,
+            email VARCHAR(30) NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            address VARCHAR(50) NOT NULL,
+            bio VARCHAR(100) NOT NULL ,
+            occupation VARCHAR(30) NOT NULL,
+            expertise VARCHAR(30) NOT NULL,
             is_mentor BOOLEAN NOT NULL DEFAULT false,
             is_admin BOOLEAN NOT NULL DEFAULT false
         )`;
 
-         this.pool.query(users)
+        await this.pool.query(users)
          .then((res) => {
              console.log("users table created...")
          })
@@ -57,11 +58,11 @@ class DatabaseSetup{
              mentorID  INT NOT NULL REFERENCES user_table(id) UNIQUE ,
              menteeID INT NOT NULL REFERENCES user_table(id) UNIQUE,
              questions VARCHAR(140) NOT NULL,
-             menteeEmail VARCHAR(40) NOT NULL UNIQUE,
-             status CHAR(8) NOT NULL DEFAULT 'pending'
+             menteeEmail VARCHAR(40) REFERENCES user_table(email) NOT NULL UNIQUE,
+             status VARCHAR(8) NOT NULL DEFAULT 'pending'
          )`;
 
-         this.pool.query(sessions)
+         await this.pool.query(sessions)
          .then((res) =>{
              console.log("sessions table created...");
          })

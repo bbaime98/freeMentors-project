@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import users from '../models/users';
 import bcrypt from 'bcrypt';
-
+import dbTables from '../../database'
 export default class USers {
     static signup(req, res) {
         const user = users.find(userof => userof.email === req.body.email)

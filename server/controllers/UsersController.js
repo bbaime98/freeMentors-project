@@ -1,56 +1,82 @@
 import jwt from 'jsonwebtoken';
 import users from '../models/users';
 import bcrypt from 'bcrypt';
-import dbTables from '../../database'
+import db from '../../database'
 export default class USers {
-    static signup(req, res) {
-        const user = users.find(userof => userof.email === req.body.email)
-        if (user) {
-            return res.status(409).json({
-                status: 409,
-                error: "the email already exists"
-            })
-        }
-        const newUser = {
-            id: users.length + 1,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 10),
-            address: req.body.address,
-            bio: req.body.bio,
-            occupation: req.body.occupation,
-            expertise: req.body.expertise,
-            is_mentor: req.body.is_mentor || false,
-            is_admin: req.body.is_admin || false
-        }
+    static async signup(req, res) {
+        const {
+            first_name,
+            last_name,
+            email,
+            password,
+            address,
+            bio,
+            occupation,
+            expertise,
+            is_mentor,
+            is_admin
+        } = req.body;
 
-        if (req.body.is_admin && req.body.is_mentor) {
+        // const user = users.find(userof => userof.email === req.body.email);
+
+        // if (user) {
+        //     return res.status(409).json({
+        //         status: 409,
+        //         error: "the email already exists"
+        //     })
+        // }
+        const newUser = [
+            first_name,
+            last_name,
+            email,
+            bcrypt.hashSync(password, 10),
+            address,
+            bio,
+            occupation,
+            expertise,
+            is_mentor || false,
+            is_admin || false
+        ]
+
+        if (is_admin && is_mentor) {
             return res.status(403).json({
                 status: 403,
                 error: " not allowed to be both admin and mentor "
             })
         }
-        const token = jwt.sign({
-            id: newUser.id,
-            is_mentor: newUser.is_mentor,
-            is_admin: newUser.is_admin,
-            email: req.body.email
-        }, process.env.JWTPRIVATEKEY);
-        res.header('token', token);
-        users.push(newUser);
-        res.status(201).json({
-            status: 201,
-            message: "user created successfully",
-            data: {
-                message: "user created successfully",
-                token: token,
-                id: newUser.id,
-                first_name: req.body.first_name,
-                email: req.body.email,
-                is_mentor: newUser.is_mentor
-            }
+
+        const insertUser = `
+        INSERT INTO user_table(first_name, last_name, email, password, address, bio, occupation, expertise, is_mentor, is_admin)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        returning first_name, last_name, email, address, bio, occupation, expertise, is_mentor, is_admin
+        `;
+        await db.pool.query(insertUser, newUser)
+        .then((response) => {
+            const token = jwt.sign({
+                id: response.rows[0].id,
+                is_mentor: is_mentor,
+                is_admin: is_admin,
+                email: email
+            }, process.env.JWTPRIVATEKEY);
+
+            res.status(201).json({
+                status: 201,
+                message: "user created successfully ",
+                data: {
+                    ...response.rows[0],
+                    token
+                } 
+            })
         })
+        .catch((error) => {
+            console.log('error', error)
+            res.status(500).json({
+                status: 500,
+                error
+            });
+        })
+
+        
     }
     static signin(req, res) {
         const user = users.find(userof => userof.email === req.body.email);

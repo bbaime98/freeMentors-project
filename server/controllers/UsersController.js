@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import users from '../models/users';
 import bcrypt from 'bcrypt';
 import db from '../../database'
 export default class USers {
@@ -78,38 +77,62 @@ export default class USers {
 
         
     }
-    static signin(req, res) {
-        const user = users.find(userof => userof.email === req.body.email);
-        if (!user) {
-            return res.status(404).json({
-                status: 404,
-                error: "User not found"
-            })
-        }
-        const password = bcrypt.compareSync(req.body.password, user.password);
-        if (!password) {
-            return res.status(403).json({
-                status: 403,
-                error: "Invalid email or password"
-            })
-        }
-        const token = jwt.sign({
-            id: user.id,
-            is_mentor: user.is_mentor,
-            is_admin: user.is_admin,
-            email: user.email
-        }, process.env.JWTPRIVATEKEY)
-        res.header('token', token)
-        res.status(200).json({
-            status: 200,
-            message: "user is successfully logged in",
-            data: {
-                token: token,
-                id: user.id,
-                first_name: user.first_name,
-                email: user.email
+    static async signin(req, res) {
+
+        const {email , password } = req.body;
+        const getUser = `
+        SELECT * FROM user_table 
+        WHERE  email = '${email}'
+        `
+
+        await db.pool.query(getUser)
+        .then((response) => {
+            if (!response.rows) {
+                return res.status(401).json({
+                    status: 401,
+                    error: "Invalid email or password"
+                });
             }
+            const { password:userPassword, is_mentor, is_admin, id, first_name } = response.rows[0];
+            
+            const comparePassword = bcrypt.compareSync(password, userPassword);
+
+            if(comparePassword){
+                const token = jwt.sign({
+                    id,
+                    is_mentor,
+                    is_admin,
+                    email
+                }, process.env.JWTPRIVATEKEY);
+    
+                return res.status(200).json({
+                    status: 200,
+                    message: "user is successfully logged in",
+                    data: {
+                        id,
+                        first_name,
+                        email,
+                        token
+                    }
+                })
+
+            } 
+            return res.status(401).json({
+                status: 401,
+                error: "Invalid email or password"
+            });
+
         })
+        .catch(error => {
+            res.status(500).send({
+                status: 500,
+                error
+            });
+        })
+        
+        
+
+        
     }
 
 }

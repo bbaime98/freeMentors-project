@@ -6,12 +6,12 @@
 		if(email.value == "admin@gmail.com" && password.value == "123"){
 			location.replace('../html/admin-pannel.html');
 		}
-		else if(email.value == "guest@gmail.com" && password.value == "123"){
-			location.replace('../html/mentee-panel.html')
+		else if(email.value == "mentor@gmail.com" && password.value == "123"){
+			location.replace('../html/mentor-panel.html')
 		}
 	
 		else{
-			alert('access denied')
+			location.replace('../html/mentee-panel.html')
 		}
 		
 	})

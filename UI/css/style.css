@@ -234,7 +234,7 @@ nav ul li a:hover {
   z-index: -1;
 }
 .login-box p {
- color: darkorange;
+ color: white;
  margin-top: 50px;
 }
 .already{
@@ -301,6 +301,14 @@ nav ul li a:hover {
 }
 .first{
   background: darkorange;
+  color: white;
+}
+.haveaccount{
+
+  color: darkorange;
+}
+.haveaccount span{
+
   color: white;
 }
 .bg-color{

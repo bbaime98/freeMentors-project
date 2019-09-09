@@ -34,7 +34,7 @@
   "scripts": {
     
     "start": "babel-watch server.js ",
-    "test": "nyc --reporter=html --reporter=text mocha --require @babel/register --timeout 10000 server/tests/ --exit",
+    "test": "SET NODE_ENV=test & nyc --reporter=html --reporter=text mocha --require @babel/register --timeout 10000 server/tests/ --exit",
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "coverage": "npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage",

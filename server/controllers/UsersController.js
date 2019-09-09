@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import db from '../../database'
+import db from '../../database/database'
 export default class USers {
     static async signup(req, res) {
         const {

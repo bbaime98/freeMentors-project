@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import app from '../app';
 import db from '../../database/database';
 import jwt from 'jsonwebtoken';
-
+import users from '../mockData/userMocks'
 dotenv.config();
 process.env.NODE_ENV = 'test';
 chai.use(chaiHttp);
@@ -20,30 +20,8 @@ describe.only('user test',()=>{
         `
         db.pool.query(deleteTables);
 
-        newUser = {
-            first_name:"aime",
-            last_name:"bien",
-            email:"usertest@gmail.com",
-            password: "efotec",
-            address:"kk 798 st",
-            bio:"A young Rwandan programmer",
-            occupation:"programmer",
-            expertise:"JS",
-            is_mentor:false,
-            is_admin:false
-           }
-        newMentor = {
-            first_name:"aime",
-            last_name:"bien",
-            email:"mentortest@gmail.com",
-            password: "efotec",
-            address:"kk 798 st",
-            bio:"A young Rwandan programmer",
-            occupation:"programmer",
-            expertise:"JS",
-            is_mentor:true,
-            is_admin:false
-        }
+       
+
         
     })
     after(()=>{
@@ -55,9 +33,10 @@ describe.only('user test',()=>{
     it('should return user created',(done)=>{
         chai.request(app)
         .post('/api/v1/auth/signup')
-        .send(newUser)
+        .send(users.newUser1)
          .end((err,res)=>{
-            userToken = res.body.data.token;
+           userToken = res.body.data.token; console.log(userToken)
+            // mochData={...mochData,token:userToken};
             res.body.should.be.a('object');
             res.body.should.have.property('status').eql(201);
             res.body.should.have.property('message').eql('user created successfully ');
@@ -69,7 +48,7 @@ describe.only('user test',()=>{
     it('should return mentor created',(done)=>{
         chai.request(app)
         .post('/api/v1/auth/signup')
-        .send(newMentor)
+        .send(users.newMentor)
         .end((err,res)=>{
             mentorToken = res.body.data.token;
             res.body.should.be.a('object');
@@ -81,57 +60,34 @@ describe.only('user test',()=>{
         })
     })
 
-        it('should return can be both adminand mentor',(done)=>{
-        newUser = {
-         first_name:"qaime",
-         last_name:"bien",
-         email:"aime@gmail.com",
-         password: "andela123",
-         address:"kk 798 st",
-         bio:"A young Rwandan programmer",
-         occupation:"programmer",
-         expertise:"JS",
-         is_mentor:true,
-         is_admin:true
-        }
+        it('should return can not be both admin and mentor',(done)=>{
+    
  
         chai.request(app)
         .post('/api/v1/auth/signup')
-        .send(newUser)
+        .send(users.newUser2)
         .end((err,res)=>{
             expect(res.statusCode).to.equal(403);
             done();
         })
     })
     it('should return email with invalid format',(done)=>{
-        newUser = {
-         first_name:"kwizera",
-         last_name:"christophe",
-         email:"bienaime.com",
-         password: "efotec",
-         address:"kk 798 st",
-         bio:"A young Rwandan programmer",
-         occupation:"programmer",
-         expertise:"JS"
-        }
+     
  
         chai.request(app)
         .post('/api/v1/auth/signup')
-        .send(newUser)
+        .send(users.newUser3)
         .end((err,res)=>{
             expect(res.statusCode).to.equal(400);
             done();
         })
     })
     it('should return login sucessfully',(done)=>{
-        const newUser = {
-         email:"usertest@gmail.com",
-         password: "efotec"
-        }
+       
  
         chai.request(app)
         .post('/api/v1/auth/signin')
-        .send(newUser)
+        .send(users.newUser4)
         .end((err,res)=>{
             res.should.have.status(200);
             res.body.should.have.property('status').eql(200);

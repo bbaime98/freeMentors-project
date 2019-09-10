@@ -37,6 +37,18 @@ const users = {
     email:"usertest@gmail.com",
     password: "efotec"
    },
+   newUser5: {
+    first_name:"aime",
+    last_name:"bien",
+    email:"christophe@gmail.com",
+    password: "efotec",
+    address:"kk 798 st",
+    bio:"A young Rwandan programmer",
+    occupation:"programmer",
+    expertise:"JS",
+    is_mentor:false,
+    is_admin:false
+   },
  newMentor:{
 
         first_name:"aime",
@@ -50,6 +62,20 @@ const users = {
         is_mentor:true,
         is_admin:false
     
- }
-   }
+ },
+ mentorController1:{
+
+    first_name:"aime",
+    last_name:"bien",
+    email:"mentorController@gmail.com",
+    password: "efotec",
+    address:"kk 798 st",
+    bio:"A young Rwandan programmer",
+    occupation:"programmer",
+    expertise:"JS",
+    is_mentor:true,
+    is_admin:false
+
+}
+}
    export default users;

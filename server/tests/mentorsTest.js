@@ -4,7 +4,6 @@ import chaiHttp from 'chai-http';
 import dotenv from 'dotenv';
 import app from '../app';
 import jwt from 'jsonwebtoken';
-import { getMaxListeners } from 'cluster';
  import users from '../mockData/userMocks'
 dotenv.config();
 chai.use(chaiHttp);
@@ -12,7 +11,7 @@ chai.should();
 
 
 describe('mentors test',()=>{
-    let  userToken, mentorToken;
+    let  userToken, mentorToken, mentorId = 4;
     it('should return user created',(done)=>{
          
         chai.request(app)
@@ -58,6 +57,18 @@ describe('mentors test',()=>{
         })
         done();
     })
-  
+    it('should return mentor found',(done)=>{
+       
+        chai.request(app)
+        .get(`/api/v1/mentors/${mentorId}`)
+        .set('token',userToken)
+        .end((err,res)=>{
+            
+            expect(res.statusCode).to.equal(200);
+            res.body.should.have.property('data');
+            done();
+        })
+    });
 
+   
  })

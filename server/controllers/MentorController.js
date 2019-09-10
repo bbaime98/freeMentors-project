@@ -4,60 +4,78 @@ import db from '../../database/database';
 
 export default class MentorsController {
 
-     static async allMentors(req, res) {
+    static async allMentors(req, res) {
 
-        const fetchMentors= `
+        const fetchMentors = `
         SELECT  id,first_name, last_name, email,
             address, bio, occupation, expertise, is_mentor FROM user_table
        WHERE is_mentor= ${ true}
 
 `;
-await db.pool.query(fetchMentors)
-.then ((response) =>{
+        await db.pool.query(fetchMentors)
+            .then((response) => {
 
-	         res.status(200).json({
-                status: 200,
-              
-                data: 
-                    
-                    response.rows
-                
+                res.status(200).json({
+                    status: 200,
+
+                    data:
+
+                        response.rows
+
+                })
+
             })
-
-	})
- .catch((error) => {
-            console.log('error', error)
-            res.status(500).json({
-                status: 500,
-                error
-            });
-        })
-};
-    static specificMentor(req, res) {
-
+            .catch((error) => {
+                console.log('error', error)
+                res.status(500).json({
+                    status: 500,
+                    error
+                });
+            })
+    };
+   
+    static async specificMentor(req, res) {
+ 
         if (isNaN(req.params.id)) {
-            return res.status(400).json({
-                status: 400,
-                error: "Please enter a  valid ID"
+                    return res.status(400).json({
+                        status: 400,
+                        error: "Please enter a  valid ID"
+                    })
+                }
+        const fetchMentor = `
+        SELECT  id,first_name, last_name, email,
+            address, bio, occupation, expertise, is_mentor FROM user_table
+       WHERE  id= ${ req.params.id} and is_mentor= ${ true} 
+
+            `;
+        await db.pool.query(fetchMentor)
+            .then(({rows}) => {
+
+                if (rows[0] = ''){
+                 return  res.status(404).json({
+                        status: 404,
+                        data: "Mentor not found"
+                   })
+                }
+                
+                return res.status(200).json({
+                    status: 200,
+
+                    data:
+
+                        rows[0]
+
+                })
+
             })
-        }
-
-        const allmentors = users.filter(userof => userof.is_mentor === true);
-
-        const mentor = allmentors.find(userof => userof.id === parseInt(req.params.id));
-
-        if (!mentor) {
-            return res.status(404).json({
-                status: 404,
-                error: "Mentor not found"
+            .catch((error) => {
+               
+               return res.status(500).json({
+                    status: 500,
+                    error
+                });
             })
-        }
-        users.forEach((user => delete user.is_admin));
-        users.forEach((user => delete user.password));
-        res.status(200).json({
-            status: 200,
-            data: mentor
-        })
+
     };
     static changeUSer(req, res) {
 
@@ -105,7 +123,7 @@ await db.pool.query(fetchMentors)
             is_mentor: user.is_mentor,
             email: user.email
         }, process.env.JWTPRIVATEKEY);
-       
+
         users.forEach((user => delete user.is_admin));
         users.forEach((user => delete user.password));
         res.header('token', token).status(200).json({
@@ -143,7 +161,7 @@ await db.pool.query(fetchMentors)
             is_admin: user.is_admin,
             email: user.email
         }, process.env.JWTPRIVATEKEY);
-        
+
         users.forEach((user => delete user.password));
         res.header('token', token).status(200)
     }

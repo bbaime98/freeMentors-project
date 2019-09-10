@@ -34,9 +34,9 @@ export default class USers {
             occupation,
             expertise,
             is_mentor || false,
-            is_admin || false
+             false
         ]
-
+        
         if (is_admin && is_mentor) {
             return res.status(403).json({
                 status: 403,
@@ -62,7 +62,7 @@ export default class USers {
                 status: 201,
                 message: "user created successfully ",
                 data: {
-                    ...response.rows[0],
+                    
                     token
                 } 
             })

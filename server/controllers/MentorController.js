@@ -1,26 +1,38 @@
 import users from '../models/users';
 import jwt from 'jsonwebtoken';
+import db from '../../database/database';
 
 export default class MentorsController {
 
-    static allMentors(req, res) {
+     static async allMentors(req, res) {
 
-        const mentors = users.filter(userof => userof.is_mentor === true);
+        const fetchMentors= `
+        SELECT  id,first_name, last_name, email,
+            address, bio, occupation, expertise, is_mentor FROM user_table
+       WHERE is_mentor= ${ true}
 
-        if (!mentors) {
-            return res.status(404).json({
-                status: 404,
-                error: "No mentors found"
+`;
+await db.pool.query(fetchMentors)
+.then ((response) =>{
+
+	         res.status(200).json({
+                status: 200,
+              
+                data: 
+                    
+                    response.rows
+                
             })
-        }
 
-        mentors.forEach((user => delete user.is_admin));
-        mentors.forEach((user => delete user.password));
-        res.status(200).json({
-            status: 200,
-            data: mentors
+	})
+ .catch((error) => {
+            console.log('error', error)
+            res.status(500).json({
+                status: 500,
+                error
+            });
         })
-    };
+};
     static specificMentor(req, res) {
 
         if (isNaN(req.params.id)) {
@@ -93,7 +105,7 @@ export default class MentorsController {
             is_mentor: user.is_mentor,
             email: user.email
         }, process.env.JWTPRIVATEKEY);
-        // user instead of users in case down on
+       
         users.forEach((user => delete user.is_admin));
         users.forEach((user => delete user.password));
         res.header('token', token).status(200).json({
@@ -105,4 +117,34 @@ export default class MentorsController {
         });
     }
 
+    static admin(req, res) {
+
+        if (isNaN(req.params.id)) {
+            return res.status(400).json({
+                status: 400,
+                error: "Please enter a  valid ID"
+            })
+        }
+
+        const user = users.find(userof => userof.id === parseInt(req.params.id))
+
+        if (!user) {
+            return res.status(404).json({
+                status: 404,
+                error: "The user id is not found"
+            })
+        }
+
+
+        user.is_admin = true;
+
+        const token = jwt.sign({
+            id: req.user.id,
+            is_admin: user.is_admin,
+            email: user.email
+        }, process.env.JWTPRIVATEKEY);
+        
+        users.forEach((user => delete user.password));
+        res.header('token', token).status(200)
+    }
 }

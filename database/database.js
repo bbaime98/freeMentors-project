@@ -1,16 +1,15 @@
 import {Pool } from 'pg';
 import env from 'dotenv';
-// import users from './server/models/users';
 
-// conat onnectionString = 'postgressql://postgres:postgres@localhost:54'
 env.config();
 
 class DatabaseSetup{
     constructor (){
+        console.log('environment-j', process.env.NODE_ENV);
         this.pool = new Pool({
             user: process.env.PG_USER,
             host: process.env.PG_HOST,
-            database: process.env.PG_DATABASE,
+            database: process.env.NODE_ENV ? process.env.TEST_DB : process.env.PG_DATABASE,
             password: process.env.PG_PASSWORD,
             port: process.env.PG_PORT
 

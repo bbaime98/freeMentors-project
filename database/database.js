@@ -3,9 +3,7 @@ import env from 'dotenv';
 import { parse } from 'path';
 
 env.config();
-// const {admin } =  process.env
-// // const newAdmin = JSON.parse(admin);
-// console.log(admin)
+
 const adminDetails = {
     first_name: 'user', 
     first_name: 'user' ,
@@ -21,7 +19,7 @@ const adminDetails = {
  }
 class DatabaseSetup{
     constructor (){
-        console.log('environment-j', process.env.NODE_ENV);
+       
         this.pool = new Pool({
             user: process.env.PG_USER,
             host: process.env.PG_HOST,

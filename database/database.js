@@ -1,8 +1,24 @@
 import {Pool } from 'pg';
 import env from 'dotenv';
+import { parse } from 'path';
 
 env.config();
-
+// const {admin } =  process.env
+// // const newAdmin = JSON.parse(admin);
+// console.log(admin)
+const adminDetails = {
+    first_name: 'user', 
+    first_name: 'user' ,
+    last_name: 'admin' ,
+     email: process.env.EMAIL , 
+     password: process.env.PASSWORD , 
+     address: 'kigali' ,
+     bio: 'am admin', 
+     occupation: 'admin', 
+     expertise: 'manager',
+     is_mentor: 'false' ,
+     is_admin: 'true'
+ }
 class DatabaseSetup{
     constructor (){
         console.log('environment-j', process.env.NODE_ENV);
@@ -68,10 +84,10 @@ class DatabaseSetup{
          .catch((error)=>{
              console.log(error.message);
          })
-
-         const  admin = `
+         
+         const  createAdmin = `
         INSERT INTO user_table(
-             first_name ,
+             first_name  ,
              last_name ,
              email ,
              password ,
@@ -81,9 +97,10 @@ class DatabaseSetup{
              expertise ,
              is_mentor ,
              is_admin ) 
-             VALUES ( 'user', 'admin', 'admin3@gmail.com', '$2a$10$FdtvVZZHlvMiP1cruNGg8uUDUkjbWuEsuCVmW9.gr3Yk6RmnIn8ti', 'kigali', 'am admin', 'admin', 'manager', 'false', 'true') on conflict (email) do nothing `;
+         
+             VALUES ( '${adminDetails.first_name}', '${adminDetails.last_name}', '${adminDetails.email}', '${adminDetails.password}', '${adminDetails.address}', '${adminDetails.bio}', '${adminDetails.occupation}', '${adminDetails.expertise}', '${adminDetails.is_mentor}', '${adminDetails.is_admin}') on conflict (email) do nothing `;
  
-         await this.pool.query(admin)
+         await this.pool.query(createAdmin)
           .then((res) => {
               console.log("admin inserted ...")
           })

@@ -27,12 +27,12 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.6",
+    "cross-env": "^5.2.1",
     "eslint": "^6.3.0",
     "mocha": "^6.2.0",
     "nodemon": "^1.19.2"
   },
   "scripts": {
-    
     "start": "babel-watch server.js ",
     "test": "SET NODE_ENV=test & nyc --reporter=html --reporter=text mocha --require @babel/register --timeout 10000 server/tests/ --exit",
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",

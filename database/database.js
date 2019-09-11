@@ -68,10 +68,10 @@ class DatabaseSetup{
          const sessions = `
          CREATE TABLE IF NOT EXISTS sessions(
              sessionID SERIAL PRIMARY KEY,
-             mentorID  INT NOT NULL REFERENCES user_table(id) UNIQUE ,
-             menteeID INT NOT NULL REFERENCES user_table(id) UNIQUE,
+             mentorID  INT NOT NULL REFERENCES user_table(id) ,
+             menteeID INT NOT NULL REFERENCES user_table(id) ,
              questions VARCHAR(140) NOT NULL,
-             menteeEmail VARCHAR(40) REFERENCES user_table(email) NOT NULL UNIQUE,
+             menteeEmail VARCHAR(40) REFERENCES user_table(email) NOT NULL ,
              status VARCHAR(8) NOT NULL DEFAULT 'pending'
          )`;
 

@@ -1,43 +1,83 @@
 import users from '../models/users';
 import sessions from '../models/sessions';
-
+import db from '../../database/database';
 export default class SessionController {
 
-    static createSession(req, res) {
+static async createSession(req, res) {
+    
+    const { mentorId, questions } = req.body;
+    const { id:menteeId, email:menteeEmail } = req.user;
 
-        const allmentors = users.filter(userof => userof.is_mentor === true);
+     const fetchMentor = `
+        SELECT * FROM user_table
+       WHERE  id= ${ req.body.mentorId} 
+        `;
+        try {
+             const {rows} =  await db.pool.query(fetchMentor)
+           
+                if (!rows){
+                 return  res.status(404).json({
+                        status: 404,
+                        data: "Mentor not found"
+                   })
+                }
+                
+        } catch (error) {
+            return res.status(500).json({
+                    status: 500,
+                    error
+                });
+        }
+    const existingSession =  `
+        SELECT * FROM sessions
+       WHERE  mentorID = ${mentorId} AND menteeID = ${menteeId}
+        `;
+        console.log(existingSession);
+        
+    try {
+    const {rows} =  await db.pool.query(existingSession)
+           console.log(rows);
+           
+                if (rows.length > 0 ){
+                 return  res.status(404).json({
+                        status: 404,
+                        data: "Session already exist"
+                   })
+                }
+                
+        } catch (error) {
+            return res.status(500).json({
+                    status: 500,
+                    error
+                });
+        }
 
-        const mentor = allmentors.find(mentorof => mentorof.id === parseInt(req.body.mentorId));
+    const newSession = [mentorId, menteeId, questions, menteeEmail];
 
-        if (!mentor) {
-            return res.status(404).json({
-                status: 404,
-                error: "Mentor not found"
+    const createSession = `
+        INSERT INTO sessions(mentorId, menteeId, questions, menteeEmail)
+        VALUES($1, $2, $3, $4)  
+        returning sessionId,mentorId, menteeId, questions, menteeEmail, status
+        `;
+        await db.pool.query(createSession, newSession)
+        .then((response) => {
+            
+          return  res.status(201).json({
+                status: 200,
+                data: response.rows
+                
             })
-        }
-
-        if (req.body.mentorId == req.user.id) {
-            return res.status(403).json({
-                status: 403,
-                error: "Can not request a session to yourself"
-            })
-        }
-
-        const newSession = {
-            sessionId: sessions.length + 1,
-            mentorId: parseInt(req.body.mentorId),
-            menteeId: req.user.id,
-            questions: req.body.questions,
-            menteeEmail: req.user.email,
-            status: "pending"
-        }
-        sessions.push(newSession);
-        res.status(201).json({
-            status: 201,
-            message: "Session created sucessfully",
-            data: newSession
         })
-    };
+        .catch((error) => {
+            console.log(error);
+            
+           return res.status(500).json({
+                status: 500,
+                error
+            });
+        })
+       
+};
     static rejectSession(req, res) {
 
         if (isNaN(req.params.id)) {

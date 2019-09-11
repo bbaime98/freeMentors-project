@@ -8,10 +8,10 @@ import jwt from 'jsonwebtoken';
 dotenv.config();
 chai.use(chaiHttp);
 chai.should();
-let  userToken, mentorToken, adminToken, mentorId = 4;
+
 
 describe('mentors test',()=>{
-    
+    let  userToken, mentorToken, adminToken, mentorId = 4;
     it('should return user created',(done)=>{
          
         chai.request(app)
@@ -69,6 +69,17 @@ describe('mentors test',()=>{
             done();
         })
     });
+    // it('should return admin created',(done)=>{
+
+    //     chai.request(app)
+    //     .post('/api/v1/auth/signup')
+    //     .send(users.admindetails)
+    //     .end((err,res)=>{
+    //         // adminToken = res.body.data.token;
+    //         expect(res.statusCode).to.equal(201);
+    //         done();
+    //     })
+    // })
 
     it('should return admin logged in',(done)=>{
          
@@ -76,8 +87,8 @@ describe('mentors test',()=>{
         .post('/api/v1/auth/signin')
         .send(users.admin)
         .end((err,res)=>{
-            adminToken = res.body.data.token;
-            console.log(adminToken)
+             adminToken = res.body.data.token;
+            
             expect(res.statusCode).to.equal(200);
             res.body.should.have.property('data');
             res.body.should.have.property('message').eql("user is successfully logged in");
@@ -93,8 +104,9 @@ describe('mentors test',()=>{
         .end((err,res)=>{
             expect(res.statusCode).to.equal(200);
             res.body.should.have.property('message').eql("User account changed to mentor");
+            done();
         })
-        done();
+        
     })
    
  })

@@ -81,8 +81,20 @@ admin: {
     email:"admin3@gmail.com",
     password: "adminTheadmin"
  
-}
-
+},
+admindetails: {
+    first_name: 'user', 
+    first_name: 'user' ,
+    last_name: 'admin' ,
+     email: 'admin3@gmail.com' , 
+     password: 'adminTheadmin' , 
+     address: 'kigali' ,
+     bio: 'am admin', 
+     occupation: 'admin', 
+     expertise: 'manager',
+     is_mentor: 'false' ,
+     is_admin: 'true'
+ }
 }
 
    export default users;

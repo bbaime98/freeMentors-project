@@ -26,7 +26,7 @@ export default class MentorsController {
 
             })
             .catch((error) => {
-                console.log('error', error)
+                
                 res.status(500).json({
                     status: 500,
                     error
@@ -60,7 +60,6 @@ export default class MentorsController {
                 
                 return res.status(200).json({
                     status: 200,
-
                     data:
 
                         rows[0]
@@ -77,7 +76,7 @@ export default class MentorsController {
             })
 
     };
-    static changeUSer(req, res) {
+    static async changeUSer(req, res) {
 
         if (isNaN(req.params.id)) {
             return res.status(400).json({
@@ -93,46 +92,36 @@ export default class MentorsController {
             })
         }
 
-        const user = users.find(userof => userof.id === parseInt(req.params.id))
+        const userToMentor = `
+        UPDATE user_table SET is_mentor = ${true} WHERE id = ${req.params.id}
+        returning id,first_name, last_name, email,
+        address, bio, occupation, expertise, is_mentor
+        `;
 
-        if (!user) {
-            return res.status(404).json({
-                status: 404,
-                error: "The user id is not found"
+        await db.pool.query(userToMentor)
+            .then(({rows}) => {
+                
+                if (rows.length < 0 ){
+                 return  res.status(404).json({
+                        status: 404,
+                        data: "user not found"
+                   })
+                }
+                
+                return res.status(200).json({
+                    status: 200,
+                    message: "User account changed to mentor",
+                    data: rows[0]
+                })
             })
-        }
-
-        if (user.is_mentor) {
-            return res.status(400).json({
-                status: 400,
-                error: "The user is already a mentor"
+            .catch((error) => {
+                    
+               return res.status(500).json({
+                    status: 500,
+                    error
+                });
             })
-        }
 
-        if (user.is_admin) {
-            return res.status(400).json({
-                status: 400,
-                error: "The user is an admin"
-            })
-        }
-        user.is_mentor = true;
-
-        const token = jwt.sign({
-            id: req.user.id,
-            is_admin: user.is_admin,
-            is_mentor: user.is_mentor,
-            email: user.email
-        }, process.env.JWTPRIVATEKEY);
-
-        users.forEach((user => delete user.is_admin));
-        users.forEach((user => delete user.password));
-        res.header('token', token).status(200).json({
-            status: 200,
-            data: {
-                message: "User account changed to mentor",
-                user
-            }
-        });
     }
 
     static admin(req, res) {

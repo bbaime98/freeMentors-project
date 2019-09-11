@@ -11,7 +11,7 @@ chai.should();
 
 
 describe('mentors test',()=>{
-    let  userToken, mentorToken, mentorId = 4;
+    let  userToken, mentorToken, adminToken, mentorId = 4;
     it('should return user created',(done)=>{
          
         chai.request(app)
@@ -70,5 +70,30 @@ describe('mentors test',()=>{
         })
     });
 
+    it('should return admin logged in',(done)=>{
+         
+        chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(users.admin)
+        .end((err,res)=>{
+            adminToken = res.body.data.token;
+            expect(res.statusCode).to.equal(200);
+            res.body.should.have.property('data');
+            res.body.should.have.property('message').eql("user is successfully logged in");
+            done();
+        })
+    });
+
+    it('should return user  changed to a metor',(done)=>{
+        
+        chai.request(app)
+        .patch('/api/v1/user/1')
+        .set('token',adminToken)
+        .end((err,res)=>{
+            expect(res.statusCode).to.equal(200);
+            res.body.should.have.property('message').eql("User account changed to mentor");
+        })
+        done();
+    })
    
  })

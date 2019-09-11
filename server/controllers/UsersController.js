@@ -84,19 +84,20 @@ export default class USers {
         SELECT * FROM user_table 
         WHERE  email = '${email}'
         `
-
+        console.log(password)
         await db.pool.query(getUser)
-        .then((response) => {
-            if (!response.rows) {
+        .then(({rows}) => {console.log(rows)
+            if (rows.length < 0) {
+                
                 return res.status(401).json({
                     status: 401,
                     error: "Invalid email or password"
                 });
             }
-            const { password:userPassword, is_mentor, is_admin, id, first_name } = response.rows[0];
+            const { password:userPassword, is_mentor, is_admin, id, first_name } = rows[0];
             
             const comparePassword = bcrypt.compareSync(password, userPassword);
-
+            console.log(comparePassword)
             if(comparePassword){
                 const token = jwt.sign({
                     id,
@@ -124,6 +125,7 @@ export default class USers {
 
         })
         .catch(error => {
+            console.log(error)
             res.status(500).send({
                 status: 500,
                 error

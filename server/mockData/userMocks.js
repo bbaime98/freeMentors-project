@@ -76,6 +76,13 @@ const users = {
     is_mentor:true,
     is_admin:false
 
+},
+admin: {
+    email:"admin3@gmail.com",
+    password: "adminTheadmin"
+ 
 }
+
 }
+
    export default users;

@@ -69,7 +69,30 @@ class DatabaseSetup{
              console.log(error.message);
          })
 
-         
+         const  admin = `
+        INSERT INTO user_table(
+             first_name ,
+             last_name ,
+             email ,
+             password ,
+             address ,
+             bio  ,
+             occupation ,
+             expertise ,
+             is_mentor ,
+             is_admin ) 
+             VALUES ( 'user', 'admin', 'admin3@gmail.com', '$2a$10$FdtvVZZHlvMiP1cruNGg8uUDUkjbWuEsuCVmW9.gr3Yk6RmnIn8ti', 'kigali', 'am admin', 'admin', 'manager', 'false', 'true') on conflict (email) do nothing `;
+ 
+         await this.pool.query(admin)
+          .then((res) => {
+              console.log("admin inserted ...")
+          })
+ 
+          .catch((error) =>{
+              console.log(error.message);
+          })
+ 
+        
          
     }
 }

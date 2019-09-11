@@ -8,10 +8,10 @@ import jwt from 'jsonwebtoken';
 dotenv.config();
 chai.use(chaiHttp);
 chai.should();
-
+let  userToken, mentorToken, adminToken, mentorId = 4;
 
 describe('mentors test',()=>{
-    let  userToken, mentorToken, adminToken, mentorId = 4;
+    
     it('should return user created',(done)=>{
          
         chai.request(app)
@@ -77,6 +77,7 @@ describe('mentors test',()=>{
         .send(users.admin)
         .end((err,res)=>{
             adminToken = res.body.data.token;
+            console.log(adminToken)
             expect(res.statusCode).to.equal(200);
             res.body.should.have.property('data');
             res.body.should.have.property('message').eql("user is successfully logged in");

@@ -52,7 +52,6 @@ describe('user test', () => {
                 res.body.should.have.property('status').eql(201);
                 res.body.should.have.property('message').eql('user created successfully ');
                 res.body.data.should.have.property('token');
-                // res.body.data.should.have.property('is_mentor').eql(true);
                 done();
             })
     })

@@ -1,11 +1,25 @@
 import {Pool } from 'pg';
 import env from 'dotenv';
+import { parse } from 'path';
 
 env.config();
 
+const adminDetails = {
+    first_name: 'user', 
+    first_name: 'user' ,
+    last_name: 'admin' ,
+     email: process.env.EMAIL , 
+     password: process.env.PASSWORD , 
+     address: 'kigali' ,
+     bio: 'am admin', 
+     occupation: 'admin', 
+     expertise: 'manager',
+     is_mentor: 'false' ,
+     is_admin: 'true'
+ }
 class DatabaseSetup{
     constructor (){
-        console.log('environment-j', process.env.NODE_ENV);
+       
         this.pool = new Pool({
             user: process.env.PG_USER,
             host: process.env.PG_HOST,
@@ -68,8 +82,32 @@ class DatabaseSetup{
          .catch((error)=>{
              console.log(error.message);
          })
-
          
+         const  createAdmin = `
+        INSERT INTO user_table(
+             first_name  ,
+             last_name ,
+             email ,
+             password ,
+             address ,
+             bio  ,
+             occupation ,
+             expertise ,
+             is_mentor ,
+             is_admin ) 
+         
+             VALUES ( '${adminDetails.first_name}', '${adminDetails.last_name}', '${adminDetails.email}', '${adminDetails.password}', '${adminDetails.address}', '${adminDetails.bio}', '${adminDetails.occupation}', '${adminDetails.expertise}', '${adminDetails.is_mentor}', '${adminDetails.is_admin}') on conflict (email) do nothing `;
+ 
+         await this.pool.query(createAdmin)
+          .then((res) => {
+              console.log("admin inserted ...")
+          })
+ 
+          .catch((error) =>{
+              console.log(error.message);
+          })
+ 
+        
          
     }
 }

@@ -16,14 +16,6 @@ export default class USers {
             is_admin
         } = req.body;
 
-        // const user = users.find(userof => userof.email === req.body.email);
-
-        // if (user) {
-        //     return res.status(409).json({
-        //         status: 409,
-        //         error: "the email already exists"
-        //     })
-        // }
         const newUser = [
             first_name,
             last_name,
@@ -68,7 +60,6 @@ export default class USers {
             })
         })
         .catch((error) => {
-            console.log('error', error)
             res.status(500).json({
                 status: 500,
                 error
@@ -84,19 +75,19 @@ export default class USers {
         SELECT * FROM user_table 
         WHERE  email = '${email}'
         `
-
         await db.pool.query(getUser)
-        .then((response) => {
-            if (!response.rows) {
+        .then(({rows}) => {
+            if (rows.length < 0) {
+                
                 return res.status(401).json({
                     status: 401,
                     error: "Invalid email or password"
                 });
             }
-            const { password:userPassword, is_mentor, is_admin, id, first_name } = response.rows[0];
+            const { password:userPassword, is_mentor, is_admin, id, first_name } = rows[0];
             
             const comparePassword = bcrypt.compareSync(password, userPassword);
-
+            
             if(comparePassword){
                 const token = jwt.sign({
                     id,
@@ -124,6 +115,7 @@ export default class USers {
 
         })
         .catch(error => {
+           
             res.status(500).send({
                 status: 500,
                 error

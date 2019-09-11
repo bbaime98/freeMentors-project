@@ -11,7 +11,7 @@ chai.should();
 
 
 describe('mentors test',()=>{
-    let  userToken, mentorToken, mentorId = 4;
+    let  userToken, mentorToken, adminToken, mentorId = 4;
     it('should return user created',(done)=>{
          
         chai.request(app)

@@ -7,11 +7,11 @@ import allusers from '../controllers/getallusers';
 
 const route = express.Router();
 
-route.get('/api/v2/users', auth, allusers)
+route.get('/api/v1/users', auth, allusers)
 
-route.post('/api/v2/auth/signup', signupValidater, UserControllers.signup);
+route.post('/api/v1/auth/signup', signupValidater, UserControllers.signup);
 
-route.post('/api/v2/auth/signin', signinValidater, UserControllers.signin);
+route.post('/api/v1/auth/signin', signinValidater, UserControllers.signin);
 
 
 

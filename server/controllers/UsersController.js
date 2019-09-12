@@ -50,7 +50,6 @@ export default class USers {
                 is_admin: is_admin,
                 email: email
             }, process.env.JWTPRIVATEKEY);
-console.log('signup ',response.rows[0]);
             res.status(201).json({
                 status: 201,
                 message: "user created successfully ",

@@ -32,12 +32,9 @@ static async createSession(req, res) {
         SELECT * FROM sessions
        WHERE  mentorID = ${mentorId} AND menteeID = ${menteeId}
         `;
-        console.log(existingSession);
-        
+       
     try {
-    const {rows} =  await db.pool.query(existingSession)
-           console.log(rows);
-           
+    const {rows} =  await db.pool.query(existingSession)          
                 if (rows.length > 0 ){
                  return  res.status(404).json({
                         status: 404,
@@ -62,7 +59,7 @@ static async createSession(req, res) {
         await db.pool.query(createSession, newSession)
         .then((response) => {
             
-          return  res.status(201).json({
+          return  res.status(200).json({
                 status: 200,
                 data: response.rows
                 
@@ -158,6 +155,7 @@ static async createSession(req, res) {
             data: session
         })
     };
+
 
     static mentorAllSession(req, res) {
         if (req.user.is_mentor) {

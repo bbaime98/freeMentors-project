@@ -76,9 +76,17 @@ describe('sessions test',()=>{
             res.body.should.have.property('message').eql('Session is Accepted');
             done();
         })
+    });
+    it('should return session rejected',(done)=>{
+
+        chai.request(app)
+        .patch('/api/v1/sessions/8/reject')
+        .set('token', mentorToken)
+        .end((err,res)=>{
+            expect(res.statusCode).to.equal(200);
+            res.body.should.have.property('message').eql('Session is Rejected');
+            done();
+        })
     })
-
-
-
 })   
  

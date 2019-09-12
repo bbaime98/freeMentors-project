@@ -6,7 +6,6 @@ import SessionController from '../controllers/SessionController';
 
 const route = express.Router();
 
-route.get('/api/v1/sessions', auth , SessionController.mentorAllSession);
 
 route.patch('/api/v1/sessions/:id/reject', auth, SessionController.rejectSession);
 

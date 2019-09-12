@@ -66,7 +66,7 @@ static async createSession(req, res) {
             })
         })
         .catch((error) => {
-            console.log(error);
+            
             
            return res.status(500).json({
                 status: 500,
@@ -116,7 +116,7 @@ static async createSession(req, res) {
     };
   
     static async acceptSsession(req, res) {
-        console.log('mentorrrr', req.user);
+        
         if(!req.user.is_mentor){
             return res.status(403).json({
                             status: 403,
@@ -127,10 +127,10 @@ static async createSession(req, res) {
             SELECT * FROM sessions
            WHERE  sessionid= '${req.params.id}' AND mentorid = '${req.user.id}'
             `;
-            console.log('fectsession....', req.params.id)
+            
             try {
                 const {rows} =  await db.pool.query(fetchSession)
-                console.log('rows...',rows)
+                
                     if (!rows){
                         
                      return  res.status(404).json({
@@ -140,7 +140,7 @@ static async createSession(req, res) {
                     }
                     
             } catch (error) {
-                console.log('accept session error',error)
+                
                 return res.status(500).json({
                         status: 500,
                         error
@@ -153,7 +153,7 @@ static async createSession(req, res) {
             `;        
         try {
         const {rows} =  await db.pool.query(updateStatus)       
-        console.log('update status.....',rows )
+        
                     if (rows){
                      return  res.status(200).json({
                             status: 200,
@@ -163,7 +163,7 @@ static async createSession(req, res) {
                     }
                     
             } catch (error) {
-                console.log('erroroor',error);
+                
                 return res.status(500).json({
                         status: 500,
                         error

@@ -157,7 +157,8 @@ static async createSession(req, res) {
                     if (rows){
                      return  res.status(200).json({
                             status: 200,
-                            data: "Session  Accepted"
+                            message: 'Session is Accepted',
+                            data: rows
                        })
                     }
                     
@@ -169,7 +170,7 @@ static async createSession(req, res) {
                     });
             }
     
-        // const newSession = [mentorId, menteeId, questions, menteeEmail];
+        
     };
 
 

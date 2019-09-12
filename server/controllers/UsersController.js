@@ -39,7 +39,7 @@ export default class USers {
         const insertUser = `
         INSERT INTO user_table(first_name, last_name, email, password, address, bio, occupation, expertise, is_mentor, is_admin)
         VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-        returning first_name, last_name, email, address, bio, occupation, expertise, is_mentor, is_admin
+        returning id, first_name, last_name, email, address, bio, occupation, expertise, is_mentor, is_admin
         `;
         await db.pool.query(insertUser, newUser)
         .then((response) => {

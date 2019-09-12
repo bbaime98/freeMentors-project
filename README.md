@@ -1,7 +1,6 @@
 - [![Build Status](https://www.travis-ci.com/bbaime98/freeMentors-project.svg?branch=develop)](https://www.travis-ci.com/bbaime98/freeMentors-project)
 - [![Maintainability](https://api.codeclimate.com/v1/badges/c0fa93741dbe645888b2/maintainability)](https://codeclimate.com/github/bbaime98/freeMentors-project/maintainability)
--[![Coverage Status](https://coveralls.io/repos/github/bbaime98/freeMentors-project/badge.svg?branch=develop)](https://coveralls.io/github/bbaime98/freeMentors-project?branch=develop)
-
+- [![Coverage Status](https://coveralls.io/repos/github/bbaime98/freeMentors-project/badge.svg?branch=develop)](https://coveralls.io/github/bbaime98/freeMentors-project?branch=develop)
 Free Mentors is a social initiative where accomplished professionals become role models to young people to provide free mentorship sessions.
 
 ##UI template for this project on github and you can  have a look follow this [link]https://bbaime98.github.io/freeMentors-project/

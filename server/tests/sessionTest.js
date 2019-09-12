@@ -65,6 +65,7 @@ describe('sessions test',()=>{
             done();
         })
     })
+
     it('should return session accepted',(done)=>{
 
         chai.request(app)
@@ -76,6 +77,7 @@ describe('sessions test',()=>{
             done();
         })
     })
+
 
 
 })   

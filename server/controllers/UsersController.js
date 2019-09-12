@@ -44,12 +44,12 @@ export default class USers {
         await db.pool.query(insertUser, newUser)
         .then((response) => {
             const token = jwt.sign({
-                id: response.rows[0].id,
+                id: response.rows[0].id, 
+                
                 is_mentor: is_mentor,
                 is_admin: is_admin,
                 email: email
             }, process.env.JWTPRIVATEKEY);
-
             res.status(201).json({
                 status: 201,
                 message: "user created successfully ",

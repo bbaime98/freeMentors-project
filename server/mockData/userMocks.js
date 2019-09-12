@@ -94,6 +94,10 @@ admindetails: {
      expertise: 'manager',
      is_mentor: 'false' ,
      is_admin: 'true'
+ },
+ session1: {
+     mentorId: 15,
+     questions: 'Okay lit si cool'
  }
 }
 

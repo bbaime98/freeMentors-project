@@ -39,17 +39,17 @@ export default class USers {
         const insertUser = `
         INSERT INTO user_table(first_name, last_name, email, password, address, bio, occupation, expertise, is_mentor, is_admin)
         VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-        returning first_name, last_name, email, address, bio, occupation, expertise, is_mentor, is_admin
+        returning id, first_name, last_name, email, address, bio, occupation, expertise, is_mentor, is_admin
         `;
         await db.pool.query(insertUser, newUser)
         .then((response) => {
             const token = jwt.sign({
-                id: response.rows[0].id,
+                id: response.rows[0].id, 
+                
                 is_mentor: is_mentor,
                 is_admin: is_admin,
                 email: email
             }, process.env.JWTPRIVATEKEY);
-
             res.status(201).json({
                 status: 201,
                 message: "user created successfully ",

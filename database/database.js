@@ -23,17 +23,17 @@ class DatabaseSetup{
         this.pool = new Pool({
             user: process.env.PG_USER,
             host: process.env.PG_HOST,
-            database: process.env.NODE_ENV ? process.env.TEST_DB : process.env.PG_DATABASE,
+            connectionString: process.env.NODE_ENV==='test' ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL,
             password: process.env.PG_PASSWORD,
             port: process.env.PG_PORT
 
         });
         this.pool.on('connect', ()=> {
-            console.log('connected...');
+            
         });
 
         this.pool.on('error', (error) => {
-            console.log('error', error);
+            
         })
 
         this.createTables();
@@ -58,11 +58,11 @@ class DatabaseSetup{
 
         await this.pool.query(users)
          .then((res) => {
-             console.log("users table created...")
+            
          })
 
          .catch((error) =>{
-             console.log(error.message);
+             
          })
 
          const sessions = `
@@ -77,10 +77,10 @@ class DatabaseSetup{
 
          await this.pool.query(sessions)
          .then((res) =>{
-             console.log("sessions table created...");
+            
          })
          .catch((error)=>{
-             console.log(error.message);
+             
          })
          
          const  createAdmin = `
@@ -100,7 +100,7 @@ class DatabaseSetup{
  
          await this.pool.query(createAdmin)
           .then((res) => {
-              console.log("admin inserted ...")
+              
           })
  
           .catch((error) =>{

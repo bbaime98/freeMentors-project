@@ -12,6 +12,7 @@ chai.should();
 
 
 describe('sessions test',()=>{
+    let sessionId;
     before(() => {
         const deleteUserTable = `
         DELETE FROM user_table
@@ -29,7 +30,7 @@ describe('sessions test',()=>{
     it('should return user created',(done)=>{
          
         chai.request(app)
-        .post('/api/v1/auth/signup')
+        .post('/api/v2/auth/signup')
         .send(users.newUser5)
         .end((err,res)=>{
             userToken = res.body.data.token;
@@ -40,7 +41,7 @@ describe('sessions test',()=>{
     it('should return mentor created',(done)=>{
 
         chai.request(app)
-        .post('/api/v1/auth/signup')
+        .post('/api/v2/auth/signup')
         .send(users.mentorController1)
         .end(async(err,res)=>{
             const fetchId = `SELECT id FROM user_Table WHERE email = '${users.mentorController1.email}'`
@@ -54,13 +55,14 @@ describe('sessions test',()=>{
     it('should return session created',(done)=>{
 
         chai.request(app)
-        .post('/api/v1/sessions')
+        .post('/api/v2/sessions')
         .send({
             mentorId: `${mentorIDD}`,
-            questions: 'Okay lit si cool'
+            questions: 'Okay lit si cool',
         })
         .set('token', userToken)
         .end((err,res)=>{
+            sessionId = res.body.data[0].sessionid;
             expect(res.statusCode).to.equal(200);
             done();
         })
@@ -69,9 +71,10 @@ describe('sessions test',()=>{
     it('should return session accepted',(done)=>{
 
         chai.request(app)
-        .patch('/api/v1/sessions/3/accept')
+        .patch(`/api/v2/sessions/${sessionId}/accept`)
         .set('token', mentorToken)
         .end((err,res)=>{
+           
             expect(res.statusCode).to.equal(200);
             res.body.should.have.property('message').eql('Session is Accepted');
             done();
@@ -80,7 +83,7 @@ describe('sessions test',()=>{
     it('should return session rejected',(done)=>{
 
         chai.request(app)
-        .patch('/api/v1/sessions/8/reject')
+        .patch(`/api/v2/sessions/${sessionId}/reject`)
         .set('token', mentorToken)
         .end((err,res)=>{
             expect(res.statusCode).to.equal(200);

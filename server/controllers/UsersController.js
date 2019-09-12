@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import db from '../../database/database'
 export default class USers {
-    static async signup(req, res) {
+    static  signup(req, res) {
         const {
             first_name,
             last_name,
@@ -41,7 +41,7 @@ export default class USers {
         VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         returning id, first_name, last_name, email, address, bio, occupation, expertise, is_mentor, is_admin
         `;
-        await db.pool.query(insertUser, newUser)
+         db.pool.query(insertUser, newUser)
         .then((response) => {
             const token = jwt.sign({
                 id: response.rows[0].id, 
@@ -60,24 +60,24 @@ export default class USers {
             })
         })
         .catch((error) => {
-            res.status(500).json({
-                status: 500,
-                error
+            res.status(409).json({
+                status: 409,
+                error: 'Email already exist'
             });
         })
 
         
     }
-    static async signin(req, res) {
+    static  signin(req, res) {
 
         const {email , password } = req.body;
         const getUser = `
         SELECT * FROM user_table 
         WHERE  email = '${email}'
         `
-        await db.pool.query(getUser)
+         db.pool.query(getUser)
         .then(({rows}) => {
-            if (rows.length < 0) {
+            if (!rows[0]) {
                 
                 return res.status(401).json({
                     status: 401,

@@ -51,7 +51,7 @@ export default class MentorsController {
         await db.pool.query(fetchMentor)
             .then(({rows}) => {
 
-                if (rows[0] = ''){
+                if (!rows[0]){
                  return  res.status(404).json({
                         status: 404,
                         data: "Mentor not found"
@@ -101,7 +101,7 @@ export default class MentorsController {
         await db.pool.query(userToMentor)
             .then(({rows}) => {
                 
-                if (rows.length < 0 ){
+                if (!rows[0] ){
                  return  res.status(404).json({
                         status: 404,
                         data: "user not found"
@@ -124,34 +124,5 @@ export default class MentorsController {
 
     }
 
-    static admin(req, res) {
 
-        if (isNaN(req.params.id)) {
-            return res.status(400).json({
-                status: 400,
-                error: "Please enter a  valid ID"
-            })
-        }
-
-        const user = users.find(userof => userof.id === parseInt(req.params.id))
-
-        if (!user) {
-            return res.status(404).json({
-                status: 404,
-                error: "The user id is not found"
-            })
-        }
-
-
-        user.is_admin = true;
-
-        const token = jwt.sign({
-            id: req.user.id,
-            is_admin: user.is_admin,
-            email: user.email
-        }, process.env.JWTPRIVATEKEY);
-
-        users.forEach((user => delete user.password));
-        res.header('token', token).status(200)
-    }
 }

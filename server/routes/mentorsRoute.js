@@ -11,6 +11,5 @@ route.get('/api/v1/mentors', auth, MentorsController.allMentors);
 
 route.patch('/api/v1/user/:id', auth, MentorsController.changeUSer);
 
-route.patch('/api/v1/admin/:id',  MentorsController.admin);
 
 export default route;

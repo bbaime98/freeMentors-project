@@ -15,7 +15,7 @@ static async createSession(req, res) {
         try {
              const {rows} =  await db.pool.query(fetchMentor)
            
-                if (rows == ''){
+                if (!rows){
                  return  res.status(404).json({
                         status: 404,
                         data: "Mentor not found"
@@ -101,7 +101,7 @@ static async createSession(req, res) {
             try {
                 const {rows} =  await db.pool.query(fetchSession)
                 
-                    if (rows == ''){
+                    if (!rows){
                         
                      return  res.status(404).json({
                             status: 404,
@@ -164,7 +164,7 @@ static async createSession(req, res) {
             try {
                 const {rows} =  await db.pool.query(fetchSession)
                 
-                    if (rows == ''){
+                    if (!rows){
                         
                      return  res.status(404).json({
                             status: 404,

@@ -66,5 +66,19 @@ describe('sessions test',()=>{
         })
     })
 
+    it('should return session accepted',(done)=>{
+
+        chai.request(app)
+        .patch('/api/v1/sessions/3/accept')
+        .set('token', mentorToken)
+        .end((err,res)=>{
+            expect(res.statusCode).to.equal(200);
+            res.body.should.have.property('message').eql('Session is Accepted');
+            done();
+        })
+    })
+
+
+
 })   
  

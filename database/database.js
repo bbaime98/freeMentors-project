@@ -29,11 +29,11 @@ class DatabaseSetup{
 
         });
         this.pool.on('connect', ()=> {
-            console.log('connected...');
+            
         });
 
         this.pool.on('error', (error) => {
-            console.log('error', error);
+            
         })
 
         this.createTables();
@@ -58,11 +58,11 @@ class DatabaseSetup{
 
         await this.pool.query(users)
          .then((res) => {
-             console.log("users table created...")
+            
          })
 
          .catch((error) =>{
-             console.log(error.message);
+             
          })
 
          const sessions = `
@@ -77,10 +77,10 @@ class DatabaseSetup{
 
          await this.pool.query(sessions)
          .then((res) =>{
-             console.log("sessions table created...");
+            
          })
          .catch((error)=>{
-             console.log(error.message);
+             
          })
          
          const  createAdmin = `
@@ -100,11 +100,11 @@ class DatabaseSetup{
  
          await this.pool.query(createAdmin)
           .then((res) => {
-              console.log("admin inserted ...")
+              
           })
  
           .catch((error) =>{
-              console.log(error.message);
+              
           })
  
         

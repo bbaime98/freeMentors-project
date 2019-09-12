@@ -61,6 +61,7 @@ static async createSession(req, res) {
             
           return  res.status(200).json({
                 status: 200,
+                mesaage: 'Session created successfully',
                 data: response.rows
                 
             })

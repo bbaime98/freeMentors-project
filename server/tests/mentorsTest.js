@@ -15,7 +15,7 @@ describe('mentors test',()=>{
     it('should return user created',(done)=>{
          
         chai.request(app)
-        .post('/api/v1/auth/signup')
+        .post('/api/v2/auth/signup')
         .send(users.newUser5)
         .end((err,res)=>{
             userToken = res.body.data.token;
@@ -27,7 +27,7 @@ describe('mentors test',()=>{
     it('should return mentor created',(done)=>{
 
         chai.request(app)
-        .post('/api/v1/auth/signup')
+        .post('/api/v2/auth/signup')
         .send(users.mentorController1)
         .end((err,res)=>{
             mentorToken = res.body.data.token;
@@ -39,7 +39,7 @@ describe('mentors test',()=>{
      it('should return all mentors ',(done)=>{
      
         chai.request(app)
-        .get('/api/v1/mentors')
+        .get('/api/v2/mentors')
         .set('token',userToken)
 
         .end((err,res)=>{
@@ -51,7 +51,7 @@ describe('mentors test',()=>{
 
     it('should return no token provided',(done)=>{
         chai.request(app)
-        .get('/api/v1/mentors')
+        .get('/api/v2/mentors')
         .end((err,res)=>{
             expect(res.statusCode).to.equal(401);
         })
@@ -60,7 +60,7 @@ describe('mentors test',()=>{
     it('should return mentor found',(done)=>{
        
         chai.request(app)
-        .get(`/api/v1/mentors/${mentorId}`)
+        .get(`/api/v2/mentors/${mentorId}`)
         .set('token',userToken)
         .end((err,res)=>{
             

@@ -29,7 +29,7 @@ describe('sessions test',()=>{
     it('should return user created',(done)=>{
          
         chai.request(app)
-        .post('/api/v1/auth/signup')
+        .post('/api/v2/auth/signup')
         .send(users.newUser5)
         .end((err,res)=>{
             userToken = res.body.data.token;
@@ -40,7 +40,7 @@ describe('sessions test',()=>{
     it('should return mentor created',(done)=>{
 
         chai.request(app)
-        .post('/api/v1/auth/signup')
+        .post('/api/v2/auth/signup')
         .send(users.mentorController1)
         .end(async(err,res)=>{
             const fetchId = `SELECT id FROM user_Table WHERE email = '${users.mentorController1.email}'`
@@ -54,7 +54,7 @@ describe('sessions test',()=>{
     it('should return session created',(done)=>{
 
         chai.request(app)
-        .post('/api/v1/sessions')
+        .post('/api/v2/sessions')
         .send({
             mentorId: `${mentorIDD}`,
             questions: 'Okay lit si cool'
@@ -69,7 +69,7 @@ describe('sessions test',()=>{
     it('should return session accepted',(done)=>{
 
         chai.request(app)
-        .patch('/api/v1/sessions/3/accept')
+        .patch('/api/v2/sessions/3/accept')
         .set('token', mentorToken)
         .end((err,res)=>{
             expect(res.statusCode).to.equal(200);
@@ -80,7 +80,7 @@ describe('sessions test',()=>{
     it('should return session rejected',(done)=>{
 
         chai.request(app)
-        .patch('/api/v1/sessions/8/reject')
+        .patch('/api/v2/sessions/8/reject')
         .set('token', mentorToken)
         .end((err,res)=>{
             expect(res.statusCode).to.equal(200);

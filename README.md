@@ -6,6 +6,7 @@ Free Mentors is a social initiative where accomplished professionals become role
 ### UI template for this project on github and you can  have a look follow this [link]https://bbaime98.github.io/freeMentors-project/
 ### It is hosted on heroku https://free-mentor-2019.herokuapp.com/
 ### All API Endpoints that you will find:
+### Documentation: https://documenter.getpostman.com/view/8269007/SVmsWLq3
 
 - POST /auth/signup Signs Up a user
 - POST /auth/signin Logs In a user

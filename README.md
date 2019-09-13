@@ -3,8 +3,8 @@
 - [![Coverage Status](https://coveralls.io/repos/github/bbaime98/freeMentors-project/badge.svg?branch=develop)](https://coveralls.io/github/bbaime98/freeMentors-project?branch=develop)
 Free Mentors is a social initiative where accomplished professionals become role models to young people to provide free mentorship sessions.
 
-##UI template for this project on github and you can  have a look follow this [link]https://bbaime98.github.io/freeMentors-project/
-
+### UI template for this project on github and you can  have a look follow this [link]https://bbaime98.github.io/freeMentors-project/
+### It is hosted on heroku https://free-mentor-2019.herokuapp.com/
 ### All API Endpoints that you will find:
 
 - POST /auth/signup Signs Up a user

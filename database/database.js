@@ -104,7 +104,7 @@ class DatabaseSetup{
           })
  
           .catch((error) =>{
-              console.log(error.message);
+              
           })
  
         

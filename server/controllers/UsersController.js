@@ -77,8 +77,7 @@ export default class USers {
         `
          db.pool.query(getUser)
         .then(({rows}) => {
-           
-            if (rows.length < 0) {
+            if (!rows[0]) {
                 
                 return res.status(401).json({
                     status: 401,

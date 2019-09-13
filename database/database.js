@@ -23,7 +23,7 @@ class DatabaseSetup{
         this.pool = new Pool({
             user: process.env.PG_USER,
             host: process.env.PG_HOST,
-            database: process.env.NODE_ENV ? process.env.TEST_DB : process.env.PG_DATABASE,
+            connectionString: process.env.NODE_ENV==='test' ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL,
             password: process.env.PG_PASSWORD,
             port: process.env.PG_PORT
 

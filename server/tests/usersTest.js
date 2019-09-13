@@ -29,7 +29,7 @@ describe('user test', () => {
     })
     it('should return user created', (done) => {
         chai.request(app)
-            .post('/api/v1/auth/signup')
+            .post('/api/v2/auth/signup')
             .send(users.newUser1)
             .end((err, res) => {
                 userToken = res.body.data.token;
@@ -44,7 +44,7 @@ describe('user test', () => {
 
     it('should return mentor created', (done) => {
         chai.request(app)
-            .post('/api/v1/auth/signup')
+            .post('/api/v2/auth/signup')
             .send(users.newMentor)
             .end((err, res) => {
                 mentorToken = res.body.data.token;
@@ -52,7 +52,6 @@ describe('user test', () => {
                 res.body.should.have.property('status').eql(201);
                 res.body.should.have.property('message').eql('user created successfully ');
                 res.body.data.should.have.property('token');
-                // res.body.data.should.have.property('is_mentor').eql(true);
                 done();
             })
     })
@@ -61,7 +60,7 @@ describe('user test', () => {
 
 
         chai.request(app)
-            .post('/api/v1/auth/signup')
+            .post('/api/v2/auth/signup')
             .send(users.newUser2)
             .end((err, res) => {
                 expect(res.statusCode).to.equal(403);
@@ -72,7 +71,7 @@ describe('user test', () => {
 
 
         chai.request(app)
-            .post('/api/v1/auth/signup')
+            .post('/api/v2/auth/signup')
             .send(users.newUser3)
             .end((err, res) => {
                 expect(res.statusCode).to.equal(400);
@@ -83,7 +82,7 @@ describe('user test', () => {
 
 
         chai.request(app)
-            .post('/api/v1/auth/signin')
+            .post('/api/v2/auth/signin')
             .send(users.newUser4)
             .end((err, res) => {
                 res.should.have.status(200);
@@ -102,7 +101,7 @@ describe('user test', () => {
         }
 
         chai.request(app)
-            .post('/api/v1/auth/signin')
+            .post('/api/v2/auth/signin')
             .send(newUser)
             .end((err, res) => {
                 expect(res.statusCode).to.equal(403);

@@ -33,14 +33,14 @@ export default class SessionController {
         }
         const existingSession = `
         SELECT * FROM sessions
-       WHERE  mentorID = ${mentorId} AND menteeID = ${menteeId}
+       WHERE  mentorID = ${mentorId} AND questions = '${questions}'
         `;
 
         try {
             const { rows } = await db.pool.query(existingSession)
           
             for (let i = 0 ; i<rows.length ; i++)   
-            if (rows[i].mentorid == mentorId & rows[i].questions == questions) {
+            if (rows[i].mentorid == mentorId && rows[i].questions == questions) {
                  
                     return res.status(400).json({
                         status: 400,
